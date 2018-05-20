@@ -5,8 +5,8 @@
   <meta name="description" content="Photos Flitcie committee WISVCH">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Flitcie - WISVCH</title>
-  <link rel="stylesheet" href="index.css" />
-  <script type="module" src="photo-gallery.js"></script>
+  <link rel="stylesheet" href="/index.css" />
+  <script type="module" src="/photo-gallery.js"></script>
 </head>
 <body>
   <header>
@@ -19,7 +19,22 @@
   </header>
   <main>
     <h1>Flitcie</h1>
-    <photo-gallery header="Bestuur 61"></photo-gallery>
+    <photo-gallery header="Bestuur 61" baseurl="/"></photo-gallery>
   </main>
+  <script>
+    const photoGallery = document.querySelector('photo-gallery');
+
+    function setPhotoGalleryProperties({newBaseUrl, header}) {
+      photoGallery.header = header;
+      photoGallery.baseurl = newBaseUrl;
+    }
+
+    window.addEventListener('popstate', event => {
+      setPhotoGalleryProperties(event.state || {
+        header: 'Bestuur 61',
+        newBaseUrl: '/'
+      });
+    });
+  </script>
 </body>
 </html>
