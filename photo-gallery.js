@@ -10,13 +10,15 @@ class FlitciePhotoGallery extends LitElement {
   static get properties() {
     return {
       header: String,
-      albums: Array
+      albums: Array,
+      baseUrl: String
     }
   }
 
   constructor() {
     super();
 
+    this.baseUrl = '/';
     this.albums = [
       {
         title:"iCom Inhouseday"
@@ -48,7 +50,9 @@ class FlitciePhotoGallery extends LitElement {
     ];
   }
 
-  _render({header, albums}) {
+  _render({header, albums, baseUrl}) {
+    const headerUrl = sanitize(header);
+
     return html`
       <style>
         .content {
@@ -57,18 +61,26 @@ class FlitciePhotoGallery extends LitElement {
           grid-template-columns: repeat(auto-fill, var(--photo-width));
           justify-content: center;
         }
+        a {
+          text-decoration: none;
+          color: inherit;
+          text-align: center;
+        }
       </style>
       <section>
         <h2>${header}</h2>
         <div class="content">
         ${
-          repeat(albums, (album) => album.title, (album) =>
-            html`
-              <div>
-                <img src="https://flitcie.ch.tudelft.nl/var/thumbs/${sanitize(header)}/${sanitize(album.title)}/.album.jpg">
-              </div>
-            `
-          )
+          repeat(albums, ({title}) => title, ({title}) => {
+            const albumUrl = sanitize(title);
+
+            return html`
+              <a href="${baseUrl}${headerUrl}/${albumUrl}">
+                <h3>${title}</h3>
+                <img src="https://flitcie.ch.tudelft.nl/var/thumbs/${headerUrl}/${albumUrl}/.album.jpg">
+              </a>
+            `;
+          })
         }
         </div>
       </section>
