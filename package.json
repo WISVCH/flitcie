@@ -1,0 +1,20 @@
+{
+  "name": "flitcie",
+  "version": "0.0.1",
+  "description": "Website for the WISVCH Flitcie committee",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "empathy install"
+  },
+  "dependencies": {
+    "@polymer/lit-element": "^0.5.1"
+  },
+  "devDependencies": {
+    "@0xcda7a/empathy": "0.0.9"
+  }
+}

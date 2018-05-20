@@ -1,0 +1,36 @@
+html, body {
+  margin: 0;
+}
+
+html {
+  --photo-width: 400px;
+  --photo-gap: 10px;
+  --number-of-photos-per-row: 3;
+  --content-width: calc(
+    /* The total width of the photos */
+    var(--number-of-photos-per-row) * var(--photo-width)
+    /* The total width of the gaps between the photos. 1 less than the number of photos */
+    + (var(--number-of-photos-per-row) - 1) * var(--photo-gap)
+  );
+}
+
+header {
+  background-color: #e7ebf1;
+}
+
+header > div {
+  display: flex;
+  margin: 0 auto;
+  max-width: var(--content-width);
+}
+
+main {
+  margin: 0 auto;
+  max-width: var(--content-width);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
