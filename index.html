@@ -71,7 +71,7 @@
       }
 
       console.log(`Selecting photo ${photo} of event ${event} of bestuur ${bestuur}`);
-      singlePhotoPage.header = `${bestuur} > ${event} > ${photo}`;
+      singlePhotoPage.header = `${bestuur} > ${event} > ${window.decodeURI(photo)}`;
       singlePhotoPage.imagePath = `boards/${bestuur}/${event}/${photo}`;
       selectPage(singlePhotoPage);
     }
