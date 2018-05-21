@@ -4,15 +4,13 @@
   "description": "Website for the WISVCH Flitcie committee",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "empathy install"
   },
   "author": "",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "empathy install"
-  },
   "dependencies": {
-    "@polymer/lit-element": "^0.5.1"
+    "@polymer/lit-element": "^0.5.1",
+    "@webcomponents/webcomponentsjs": "^2.0.0"
   },
   "devDependencies": {
     "@0xcda7a/empathy": "0.0.9"
