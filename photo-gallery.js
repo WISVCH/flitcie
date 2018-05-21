@@ -7,7 +7,7 @@ class FlitciePhotoGallery extends LitElement {
     return {
       header: String,
       albums: Array
-    }
+    };
   }
 
   constructor() {
@@ -29,6 +29,19 @@ class FlitciePhotoGallery extends LitElement {
           text-decoration: none;
           color: inherit;
           text-align: center;
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 16px;
+        }
+        a > div {
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          margin: 0 auto;
+          align-items: center;
+        }
+        h3 {
+          margin-bottom: 4px;
         }
       </style>
       <section>
@@ -44,8 +57,12 @@ class FlitciePhotoGallery extends LitElement {
             return html`
               <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
                 <h3>${title}</h3>
-                <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
-              </a>
+                <div>
+                  <div>
+                    <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
+                  </div>
+                </div>
+               </a>
             `;
           })
         }

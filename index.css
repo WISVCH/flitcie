@@ -4,7 +4,7 @@ html, body {
 
 html {
   --photo-width: 400px;
-  --photo-gap: 10px;
+  --photo-gap: 16px;
   --number-of-photos-per-row: 3;
   --content-width: calc(
     /* The total width of the photos */
@@ -37,4 +37,10 @@ nav {
 
 .page-selector > *:not([selected]) {
   display: none !important;
+}
+
+@media (max-width: 600px) {
+    main {
+        margin: 0 16px;
+    }
 }
