@@ -34,3 +34,7 @@ nav {
   align-items: center;
   margin-left: 10px;
 }
+
+.page-selector > *:not([selected]) {
+  display: none !important;
+}

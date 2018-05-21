@@ -1,19 +1,12 @@
 import {LitElement, html} from './assets/@polymer/lit-element/lit-element.js';
 import {repeat} from './assets/lit-html/lib/repeat.js';
 
-function sanitize(text) {
-  return text && text.replace(/ /g, '-') || '';
-}
-
-const baseurlSymbol = Symbol.for('baseurl');
-
 class FlitciePhotoGallery extends LitElement {
 
   static get properties() {
     return {
       header: String,
-      albums: Array,
-      baseurl: String
+      albums: Array
     }
   }
 
@@ -23,9 +16,7 @@ class FlitciePhotoGallery extends LitElement {
     this.albums = [];
   }
 
-  _render({header, albums, baseurl}) {
-    const headerUrl = sanitize(header);
-
+  _render({header, albums}) {
     return html`
       <style>
         .content {
@@ -45,13 +36,15 @@ class FlitciePhotoGallery extends LitElement {
         <div class="content">
         ${
           repeat(albums, ({title}) => title, (album) => {
-            const {title} = album;
-            const albumUrl = sanitize(title);
+            const {path, title} = album;
+            // The api returns with `boards/` preprended. Strip that away
+            const actualPath = path.slice(7);
+            const imagePath = actualPath + (path.endsWith('.JPG') ? '' : '/.album.jpg');
 
             return html`
-              <a href="${baseurl}${headerUrl}/${albumUrl}" on-click=${event => this.goToUrl(event, album)}>
+              <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
                 <h3>${title}</h3>
-                <img src="https://flitcie.ch.tudelft.nl/var/thumbs/${headerUrl}/${albumUrl}/.album.jpg">
+                <img src="https://flitcie.ch.tudelft.nl/var/thumbs/${imagePath}">
               </a>
             `;
           })
@@ -61,11 +54,11 @@ class FlitciePhotoGallery extends LitElement {
     `;
   }
 
-  async goToUrl(event, album) {
-    // Clicks are not always on the "a" element itself, but also on its children
-    // Traverse up in the tree to reach the a element
+  async goToUrl(event, path) {
     let {target} = event;
 
+    // Clicks are not always on the "a" element itself, but also on its children
+    // Traverse up in the tree to reach the a element
     while (target.localName !== 'a') {
       target = target.parentNode;
     }
@@ -75,29 +68,12 @@ class FlitciePhotoGallery extends LitElement {
     }
     event.preventDefault();
 
-    this.header = album.title;
-
-    const newBaseUrl = `${this.baseurl}${sanitize(this.header)}/${sanitize(album.title)}/`;
-    this.baseurl = newBaseUrl;
-
-    window.history.pushState({newBaseUrl, header: album.title}, '', newBaseUrl);
-  }
-
-  set baseurl(newBaseUrl) {
-    this[baseurlSymbol] = newBaseUrl;
-    this.fetchNewImagesForBaseUrl(newBaseUrl);
-  }
-
-  get baseurl() {
-    return this[baseurlSymbol] || '/';
+    window.history.pushState({path}, '', path);
+    window.dispatchEvent(new CustomEvent('page-change'));
   }
 
   async fetchNewImagesForBaseUrl(newBaseUrl) {
-    const request = await fetch(`${newBaseUrl}images.json`);
-
-    if (this.baseurl !== newBaseUrl) {
-      return;
-    }
+    const request = await fetch(`http://10.54.0.4:8080/${newBaseUrl}`);
 
     if (request.ok) {
       this.albums = await request.json();

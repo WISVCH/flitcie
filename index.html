@@ -20,22 +20,60 @@
   </header>
   <main>
     <h1>Flitcie</h1>
-    <photo-gallery header="Bestuur 61" baseurl="/"></photo-gallery>
+    <div class="page-selector">
+      <photo-gallery id="index-page"></photo-gallery>
+      <photo-gallery id="bestuur-page"></photo-gallery>
+      <photo-gallery id="event-page"></photo-gallery>
+    </div>
   </main>
   <script>
-    const photoGallery = document.querySelector('photo-gallery');
+    const indexPage = document.getElementById('index-page');
+    const bestuurPage = document.getElementById('bestuur-page');
+    const eventPage = document.getElementById('event-page');
 
-    function setPhotoGalleryProperties({newBaseUrl, header}) {
-      photoGallery.header = header;
-      photoGallery.baseurl = newBaseUrl;
+    function selectPage(page) {
+      const previousPage = document.querySelector('.page-selector > [selected]')
+
+      if (previousPage) {
+        previousPage.removeAttribute('selected');
+      }
+      page.setAttribute('selected', '');
     }
 
-    window.addEventListener('popstate', event => {
-      setPhotoGalleryProperties(event.state || {
-        header: 'Bestuur 61',
-        newBaseUrl: '/'
-      });
+    function loadPhotoGalleryForUrl() {
+      // Remove the first `/` from the url
+      const [_, bestuur, event, photo] = window.location.pathname.split('/');
+
+      // Basic index.html
+      if (!bestuur) {
+        console.log('Selecting index');
+        indexPage.fetchNewImagesForBaseUrl('boards');
+        return selectPage(indexPage);
+      }
+
+      // A single bestuur
+      if (!event) {
+        console.log(`Selecting bestuur ${bestuur}`);
+        bestuurPage.fetchNewImagesForBaseUrl(`boards/${bestuur}`);
+        return selectPage(bestuurPage);
+      }
+
+      // A single event
+      if (!photo) {
+        console.log(`Selecting event ${event} of bestuur ${bestuur}`);
+        eventPage.fetchNewImagesForBaseUrl(`boards/${bestuur}/${event}`);
+        return selectPage(eventPage);
+      }
+    }
+
+    customElements.whenDefined('photo-gallery').then(() => loadPhotoGalleryForUrl());
+
+    window.addEventListener('popstate', () => {
+      loadPhotoGalleryForUrl();
     });
+    window.addEventListener('page-change', () => {
+      loadPhotoGalleryForUrl();
+    })
   </script>
 </body>
 </html>
