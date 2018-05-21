@@ -57,7 +57,7 @@
       // A single bestuur
       if (!event) {
         console.log(`Selecting bestuur ${bestuur}`);
-        bestuurPage.header = bestuur;
+        bestuurPage.header = [bestuur];
         bestuurPage.fetchNewImagesForBaseUrl(`boards/${bestuur}`);
         return selectPage(bestuurPage);
       }
@@ -65,13 +65,13 @@
       // A single event
       if (!photo) {
         console.log(`Selecting event ${event} of bestuur ${bestuur}`);
-        eventPage.header = `${bestuur} > ${event}`;
+        eventPage.header = [bestuur, event];
         eventPage.fetchNewImagesForBaseUrl(`boards/${bestuur}/${event}`);
         return selectPage(eventPage);
       }
 
       console.log(`Selecting photo ${photo} of event ${event} of bestuur ${bestuur}`);
-      singlePhotoPage.header = `${bestuur} > ${event} > ${window.decodeURI(photo)}`;
+      singlePhotoPage.header = [bestuur, event, window.decodeURI(photo)];
       singlePhotoPage.imagePath = `boards/${bestuur}/${event}/${photo}`;
       selectPage(singlePhotoPage);
     }

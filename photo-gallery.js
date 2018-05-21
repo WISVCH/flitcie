@@ -5,7 +5,7 @@ class FlitciePhotoGallery extends LitElement {
 
   static get properties() {
     return {
-      header: String,
+      header: Array,
       albums: Array
     }
   }
@@ -14,6 +14,7 @@ class FlitciePhotoGallery extends LitElement {
     super();
 
     this.albums = [];
+    this.header = [];
   }
 
   _render({header, albums}) {
@@ -32,7 +33,10 @@ class FlitciePhotoGallery extends LitElement {
         }
       </style>
       <section>
-        <h2>${header}</h2>
+        ${(() => {
+          const links = header.map(part => `<a href="${part}">${part}</a>`);
+          return html`<h2>${links.join(` &nbsp; &gt; &nbsp; `)}</h2>`;
+        })()}
         <div class="content">
         ${
           repeat(albums, ({title}) => title, (album) => {
