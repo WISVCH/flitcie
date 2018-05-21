@@ -38,13 +38,13 @@ class FlitciePhotoGallery extends LitElement {
           repeat(albums, ({title}) => title, (album) => {
             const {path, title} = album;
             // The api returns with `boards/` preprended. Strip that away
-            const actualPath = path.slice(7);
+            const actualPath = `/${path.slice(7)}`;
             const imagePath = actualPath + (path.endsWith('.JPG') ? '' : '/.album.jpg');
 
             return html`
               <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
                 <h3>${title}</h3>
-                <img src="https://flitcie.ch.tudelft.nl/var/thumbs/${imagePath}">
+                <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
               </a>
             `;
           })
