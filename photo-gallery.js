@@ -1,11 +1,13 @@
 import {LitElement, html} from './assets/@polymer/lit-element/lit-element.js';
 import {repeat} from './assets/lit-html/lib/repeat.js';
 
+import {ERROR_MESSAGE, createHeader} from './utils.js';
+
 class FlitciePhotoGallery extends LitElement {
 
   static get properties() {
     return {
-      header: String,
+      header: Array,
       albums: Array
     }
   }
@@ -14,6 +16,7 @@ class FlitciePhotoGallery extends LitElement {
     super();
 
     this.albums = [];
+    this.header = [];
   }
 
   _render({header, albums}) {
@@ -25,14 +28,14 @@ class FlitciePhotoGallery extends LitElement {
           grid-template-columns: repeat(auto-fill, var(--photo-width));
           justify-content: center;
         }
-        a {
+        .content a {
           text-decoration: none;
           color: inherit;
           text-align: center;
         }
       </style>
       <section>
-        <h2>${header}</h2>
+        ${createHeader(header)}
         <div class="content">
         ${
           repeat(albums, ({title}) => title, (album) => {
@@ -78,7 +81,7 @@ class FlitciePhotoGallery extends LitElement {
     if (request.ok) {
       this.albums = await request.json();
     } else {
-      this.header = 'Oops something went wrong! Please refresh the page.';
+      this.header = ERROR_MESSAGE;
       this.albums = [];
     }
   }
