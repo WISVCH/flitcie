@@ -3,6 +3,8 @@ import {repeat} from './assets/lit-html/lib/repeat.js';
 
 import {ERROR_MESSAGE, createHeader} from './utils.js';
 
+const observer = Symbol.for('observer');
+
 class FlitciePhotoGallery extends LitElement {
 
   static get properties() {
@@ -19,7 +21,23 @@ class FlitciePhotoGallery extends LitElement {
     this.header = [];
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    this[observer] = new IntersectionObserver(this.__showImages.bind(this), {
+      rootMargin: '300px'
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this[observer].disconnect();
+  }
+
   _render({header, albums}) {
+    this[observer] && this[observer].disconnect();
+
     return html`
       <style>
         .content {
@@ -36,6 +54,7 @@ class FlitciePhotoGallery extends LitElement {
           flex-direction: column;
           margin: 0 auto 16px auto;
           max-width: 90vw;
+          min-height: 300px;
         }
         h3 {
           margin-bottom: 4px;
@@ -54,7 +73,7 @@ class FlitciePhotoGallery extends LitElement {
             return html`
               <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
                 <h3>${title}</h3>
-                <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
+                <img data-src$=${"https://flitcie.ch.tudelft.nl/var/thumbs" + imagePath}>
                </a>
             `;
           })
@@ -62,6 +81,26 @@ class FlitciePhotoGallery extends LitElement {
         </div>
       </section>
     `;
+  }
+
+  _didRender() {
+    for (const img of this.shadowRoot.querySelectorAll('img[data-src]')) {
+      this[observer].observe(img);
+    }
+  }
+
+  __showImages(entries) {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const src = img.dataset.src;
+
+        img.removeAttribute('data-src');
+        img.setAttribute('src', src);
+
+        this[observer].unobserve(img);
+      }
+    }
   }
 
   async goToUrl(event, path) {
