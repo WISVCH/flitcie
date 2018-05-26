@@ -4,7 +4,7 @@ html, body {
 
 html {
   --photo-width: 400px;
-  --photo-gap: 10px;
+  --photo-gap: 16px;
   --number-of-photos-per-row: 3;
   --content-width: calc(
     /* The total width of the photos */
@@ -26,6 +26,7 @@ header > div {
 
 main {
   margin: 0 auto;
+  padding: 0 16px;
   max-width: var(--content-width);
 }
 
