@@ -34,14 +34,8 @@ class FlitciePhotoGallery extends LitElement {
           text-align: center;
           display: flex;
           flex-direction: column;
-          margin-bottom: 16px;
-        }
-        a > div {
-          flex: 1;
-          display: flex;
-          flex-direction: row;
-          margin: 0 auto;
-          align-items: center;
+          margin: 0 auto 16px auto;
+          max-width: 90vw;
         }
         h3 {
           margin-bottom: 4px;
@@ -60,11 +54,7 @@ class FlitciePhotoGallery extends LitElement {
             return html`
               <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
                 <h3>${title}</h3>
-                <div>
-                  <div>
-                    <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
-                  </div>
-                </div>
+                <img src="https://flitcie.ch.tudelft.nl/var/thumbs${imagePath}">
                </a>
             `;
           })

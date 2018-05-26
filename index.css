@@ -26,6 +26,7 @@ header > div {
 
 main {
   margin: 0 auto;
+  padding: 0 16px;
   max-width: var(--content-width);
 }
 
@@ -37,10 +38,4 @@ nav {
 
 .page-selector > *:not([selected]) {
   display: none !important;
-}
-
-@media (max-width: 600px) {
-    main {
-        margin: 0 16px;
-    }
 }
