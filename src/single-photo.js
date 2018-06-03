@@ -24,7 +24,9 @@ class FlitcieSinglePhoto extends LitElement {
       </style>
       <section>
         <h2>${createHeader(header)}</h2>
-        <img width="100%" src="http://10.54.0.4:8080/${imagePath}">
+        <a target="_blank" href="http://10.54.0.4:8080/${imagePath}">
+          <img width="100%" src="http://10.54.0.4:8080/${imagePath}" alt="Inspect the full image">
+        </a>
       </section>
     `;
   }
