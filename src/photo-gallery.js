@@ -1,7 +1,7 @@
 import {LitElement, html} from '../assets/@polymer/lit-element/lit-element.js';
 import {repeat} from '../assets/lit-html/lib/repeat.js';
 
-import {ERROR_MESSAGE, createHeader} from './utils.js';
+import {ERROR_MESSAGE, createHeader, goToUrl} from './utils.js';
 
 const observer = Symbol.for('observer');
 
@@ -71,7 +71,7 @@ class FlitciePhotoGallery extends LitElement {
             const imagePath = actualPath + (path.endsWith('.JPG') ? '' : '/.album.jpg');
 
             return html`
-              <a href="${actualPath}" on-click=${event => this.goToUrl(event, actualPath)}>
+              <a href="${actualPath}" on-click=${goToUrl}>
                 <h3>${title}</h3>
                 <img data-src$=${"https://flitcie.ch.tudelft.nl/var/thumbs" + imagePath}>
                </a>
@@ -103,33 +103,21 @@ class FlitciePhotoGallery extends LitElement {
     }
   }
 
-  async goToUrl(event, path) {
-    let {target} = event;
-
-    // Clicks are not always on the "a" element itself, but also on its children
-    // Traverse up in the tree to reach the a element
-    while (target.localName !== 'a') {
-      target = target.parentNode;
-    }
-
-    if (!target.href.startsWith(document.baseURI)) {
-      return;
-    }
-    event.preventDefault();
-
-    window.history.pushState({path}, '', path);
-    window.dispatchEvent(new CustomEvent('page-change'));
-  }
-
   async fetchNewImagesForBaseUrl(newBaseUrl) {
-    const request = await fetch(`http://10.54.0.4:8080/${newBaseUrl}`);
+    try {
+      const request = await fetch(`http://10.54.0.4:8080/${newBaseUrl}`);
+      if (request.ok) {
+        this.albums = await request.json();
+        return;
+      }
+    } catch (e) {
 
-    if (request.ok) {
-      this.albums = await request.json();
-    } else {
-      this.header = ERROR_MESSAGE;
-      this.albums = [];
     }
+
+    const additionalInfo = navigator.onLine ? 'Please refresh the page.' : 'You appear to have no working network connection.';
+
+    this.header = `${ERROR_MESSAGE} ${additionalInfo}`;
+    this.albums = [];
   }
 }
 customElements.define('photo-gallery', FlitciePhotoGallery);
