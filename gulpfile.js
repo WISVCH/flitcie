@@ -24,7 +24,7 @@ gulp.task('copy-dependencies', () =>
 )
 
 gulp.task('copy-source', () =>
-  gulp.src(['index.html', 'index.css'])
+  gulp.src(['index.html', 'index.css', 'manifest.json'])
     .pipe(gulp.dest('./dist'))
 )
 

@@ -1,0 +1,9 @@
+{
+  "name": "Flitcie - WISVCH",
+  "short_name": "Flitcie",
+  "icons": [],
+  "background_color": "#40556a",
+  "theme_color": "#40556a",
+  "start_url": "/",
+  "display": "standalone"
+}
