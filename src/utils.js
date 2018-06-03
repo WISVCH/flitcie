@@ -1,4 +1,4 @@
-import {html} from './assets/@polymer/lit-element/lit-element.js';
+import {html} from '../assets/@polymer/lit-element/lit-element.js';
 
 export const ERROR_MESSAGE = 'Oops something went wrong! Please refresh the page.';
 

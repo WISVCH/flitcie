@@ -1,5 +1,5 @@
-import {LitElement, html} from './assets/@polymer/lit-element/lit-element.js';
-import {repeat} from './assets/lit-html/lib/repeat.js';
+import {LitElement, html} from '../assets/@polymer/lit-element/lit-element.js';
+import {repeat} from '../assets/lit-html/lib/repeat.js';
 
 import {ERROR_MESSAGE, createHeader} from './utils.js';
 

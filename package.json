@@ -4,13 +4,18 @@
   "description": "Website for the WISVCH Flitcie committee",
   "main": "index.html",
   "scripts": {
-    "postinstall": "empathy install"
+    "postinstall": "empathy install --only=@webcomponents/webcomponentsjs --only=@polymer/lit-element",
+    "build": "gulp build"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@polymer/lit-element": "^0.5.1",
-    "@webcomponents/webcomponentsjs": "^2.0.0"
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-babel-minify": "^0.4.3",
+    "gulp-rollup": "^2.16.2"
   },
   "devDependencies": {
     "@0xcda7a/empathy": "0.0.9"
