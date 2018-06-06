@@ -12,5 +12,5 @@ Run:
 
 ```
 docker build . -t flitcie
-docker run -p 8080:8080 -t flitcie
+docker run -p 8080:80 -t flitcie
 ```
